@@ -1,0 +1,12 @@
+__pycache__/
+
+downloads/
+checkpoint/
+
+.ipynb_checkpoints
+
+.env
+.envrc
+.venv
+
+.pyre/
