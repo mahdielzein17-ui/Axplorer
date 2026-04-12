@@ -7,6 +7,21 @@ def setup_function():
     RamseyDataPoint.S = 3
 
 
+def max_violations(N, r, s):
+    return len(list(combinations(range(N), r))) + len(list(combinations(range(N), s)))
+
+
+def test_maximum_score():
+    N = 6
+    r = 3
+    s = 3
+
+    print(
+        f"the maximum score on (N = {N}, r = {r}, s = {s}) = {max_violations(N, r, s)}"
+    )
+    assert False
+
+
 def test_init_random():
     dp = RamseyDataPoint(N=10, init=True)
     assert dp.data.shape == (10, 10)
@@ -15,7 +30,7 @@ def test_init_random():
     # diagonal is 0
     assert all(dp.data[i][i] == 0 for i in range(10))
     # score exists
-    assert dp.score <= 0
+    assert dp.score >= 0
 
 
 def test_violations():
@@ -40,7 +55,7 @@ def test_known_valid_k4():
     dp.data[1][3] = dp.data[3][1] = 1
     dp._compute_violations()
     dp.calc_score()
-    assert dp.score == 0
+    assert dp.score == max_violations(4, 3, 3)
     assert len(dp.violations) == 0
 
 
@@ -48,3 +63,4 @@ def test_known_invalid_k6():
     """R(3,3)=6, so every 2-coloring of K6 has a monochromatic K3"""
     dp = RamseyDataPoint(N=6, init=True)
     assert len(dp.violations) > 0
+    assert dp.score < max_violations(6, 3, 3)
